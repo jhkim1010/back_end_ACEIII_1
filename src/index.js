@@ -1,25 +1,41 @@
-// const {sequelize} = require('../database/database.js'); 
-// const { json } = require('sequelize');
-const app = require('./app.js');
+const express = require('express');
+// const router  = require('../routers/codigosRouter');
+const {Server} = require("socket.io")
+const cors = require("cors")
+const { default: helmet } = require('helmet');
+const authRouter = require("./routers/authRouter")
+const cookieParser = require('cookie-parser');
+const { createToken } = require('./routers/JWT');
 
-// app.use('./models/project');
+const app = express();
+
+const server = require('http').createServer(app); 
 
 const port = process.env.PORT || 4000;
-// app.use(express.)
 
-async function main() {
-  // try {
-    // await sequelize.authenticate();
-    // console.log('Connection has been established successfully.');
-    app.listen(port); 
-    console.log('Server on port', port);
-  // }
-}
-  // catch (error) {
-    // console.error('Unable to connect to the database:', error);
-  // }
+const io = new Server(server, 
+    {
+        cors : "http://localhost:3000", 
+        credentials : "true"
+    }
+); 
 
+app.use(
+  cors({
+    origin : "http://localhost:3000", 
+    credentials : true ,
+  })
+)
+app.use(helmet()); 
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/auth", authRouter); 
+
+io.on("connect", socket => {}); 
+
+server.listen(port, () => {
+    console.log(`Server is listening on port ${port}`)
+})
   
-
-
-main();
