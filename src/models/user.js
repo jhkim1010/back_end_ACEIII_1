@@ -11,7 +11,7 @@ const Users = sequelize.define('users', {
     username: {
         type: DataTypes.STRING,
         allowNull: false
-    },
+    }, 
     password: {
         type: DataTypes.STRING,
         allowNull: false
@@ -24,12 +24,12 @@ const Users = sequelize.define('users', {
         type: DataTypes.INTEGER,
         allowNull: false
     }, 
-    is_deleted: {
+    is_blocked: {
         type: DataTypes.BOOLEAN,
         defaultValue: false , 
         allowNull: false
-    }, 
-    
+    }
+
 }, {
     timestamps: true 
 }); 
